@@ -11,13 +11,18 @@ $display_position = get_option('ak_view_count_location');
 <div class="wrap">
     <h1>AK View Counter Settings</h1>
     <form method="post" action="options.php">
+
+	    <?php settings_fields('ak-view-count'); ?>
+	    <?php do_settings_sections('ak-view-counter-settings'); ?>
+
         <table class="form-table">
             <tr valign="top">
                 <th scope="row">Display</th>
                 <td>
                     <input type="checkbox"
                            name="ak_view_count_display"
-                           value="<?php echo (int) $is_display; ?>" />
+                           value="1"
+                           <?php if($is_display) echo 'checked'; ?> />
                 </td>
             </tr>
             <tr valign="top">
