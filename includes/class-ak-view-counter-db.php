@@ -50,8 +50,25 @@ class AK_View_Counter_Db
      * @param string $post_type
      * @return array
      */
-    public static function get_top_views(string $post_type) {
+    public static function get_top_views(string $post_type = '') {
+	    global $wpdb;
 
+		$table = $wpdb->base_prefix . self::VIEW_COUNT_TABLE;
+
+		if($post_type) {
+			$top_views_query =
+				$wpdb->prepare("SELECT post_id, views FROM " . $table . " 
+									  WHERE post_type = %s
+									  ORDER BY views DESC
+									  LIMIT 5",
+					$post_type);
+		} else {
+			$top_views_query = "SELECT post_id, views FROM " . $table . "
+							    ORDER BY views DESC
+							    LIMIT 5";
+		}
+
+	    return $wpdb->get_results($top_views_query, ARRAY_A);
     }
 
     /**

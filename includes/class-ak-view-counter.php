@@ -31,7 +31,7 @@ class AK_View_Counter {
         $post_author = get_post_field('post_author', $post_id);
         $current_user_id = get_current_user_id();
 
-        // if($current_user_id == $post_author) return;
+        if($current_user_id == $post_author) return;
 
         // Do not count posts that are not published
         $post_status = get_post_status();
@@ -47,16 +47,20 @@ class AK_View_Counter {
      * Display html code to show view count in front end
      */
 	public static function show_views($content) {
+		// Don't show if it is not a single page
         if(!is_singular()) return $content;
 
-        $user_setting = get_option('ak_view_counter_pos');
+		// Don't show if user selects so
+        $is_display = get_option('ak_view_count_display');
+		if(!$is_display) return $content;
 
+        $location = get_option('ak_view_count_location');
         $views = AK_View_Counter_Db::get_view_count(get_the_ID());
 
         $view_count_text = "<div class='ak-view-counter'>Views: " . $views . '</div>';
 
-        if($user_setting) {
-           if($user_setting === 'top') {
+        if($location) {
+           if($location === 'top') {
                return $view_count_text . $content;
            } else {
                return $content . $view_count_text;
