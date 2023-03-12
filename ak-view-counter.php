@@ -37,6 +37,7 @@ function ak_create_view_count_table() {
 	dbDelta($page_views);
 }
 
-require_once ( AK_VIEW_COUNTER_DIR . '/includes/class-ak-view-counter.php' );
 require_once ( AK_VIEW_COUNTER_DIR . '/includes/class-ak-view-counter-db.php' );
+require_once ( AK_VIEW_COUNTER_DIR . '/includes/class-ak-view-counter.php' );
 require_once ( AK_VIEW_COUNTER_DIR . '/includes/class-ak-view-counter-settings.php' );
+require_once ( AK_VIEW_COUNTER_DIR . '/includes/class-ak-view-counter-admin.php' );

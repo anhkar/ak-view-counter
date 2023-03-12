@@ -3,16 +3,17 @@
  * Register view count into database
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! class_exists('AK_View_Counter_Db')) return;
 
 class AK_View_Counter {
+
 	public static function init() {
         add_action( 'wp', array( __CLASS__, 'count_up' ) );
         add_action( 'deleted_post', array( __CLASS__, 'remove_view_count' ) );
+		add_action( 'init', array( __CLASS__, 'register_top_view_shortcode' ) );
 
-        add_filter( 'the_content', array( __CLASS__, 'show_views' ) );
+		add_filter( 'the_content', array( __CLASS__, 'show_views' ) );
     }
 
 	/**
@@ -68,6 +69,45 @@ class AK_View_Counter {
         }
 
         return $content;
+	}
+
+	/**
+	 * Register a shortcode so that user can include it in for example widgets
+	 * [ak-top-views]
+	 */
+	public static function register_top_view_shortcode() {
+		add_shortcode( 'ak-top-views', array(__CLASS__, 'display_top_views') );
+	}
+
+	/**
+	 * Display the list on front end
+	 * @param $atts
+	 * @return false|string
+	 */
+	public static function display_top_views($atts) {
+		$atts = shortcode_atts( array(
+			'post_type' => '',
+		), $atts );
+
+		$top_view = AK_View_Counter_Db::get_top_views($atts['post_type']);
+
+		if(!$top_view) echo "No views.";
+
+		// Setup the array which contain titles and links of selected top views
+		$top_view_articles = [];
+		foreach($top_view as $tv) {
+			$top_view_articles[] = array(
+				'title' => apply_filters('the_title', get_the_title($tv['post_id'])),
+				'link' => esc_url(get_the_permalink($tv['post_id'])),
+				'view' => (int) $tv['views']
+			);
+		}
+
+		ob_start();
+
+		include(AK_VIEW_COUNTER_DIR . '/templates/top-views.php');
+
+		return ob_get_clean();
 	}
 
     /**

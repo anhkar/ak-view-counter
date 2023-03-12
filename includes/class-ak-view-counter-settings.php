@@ -1,6 +1,6 @@
 <?php
 /**
- * Handling admin area settings
+ * Handling user settings / options
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
