@@ -28,7 +28,7 @@ class AK_View_Counter_Settings {
     }
 
     /**
-     * Settings page display
+     * Include settings page template
      */
     public static function register_counter_settings() {
         include_once(AK_VIEW_COUNTER_DIR . '/templates/settings.php');

@@ -18,7 +18,7 @@ class AK_View_Counter {
 
 	/**
 	 * Increase views
-     * Happens after WP environment has finished setup and is deciding which template to load
+     * Happens after WP environment has finished setup
      * Post ID and post type are accessible at this point
 	 */
 	public static function count_up() {
@@ -46,6 +46,7 @@ class AK_View_Counter {
 
     /**
      * Display html code to show view count in front end
+     * @params $content
      */
 	public static function show_views($content) {
 		// Don't show if it is not a single page
@@ -112,6 +113,7 @@ class AK_View_Counter {
 
     /**
      * Delete the view count data together with the deletion of a post
+     * @params $post_id
      */
 	public static function remove_view_count($post_id) {
         AK_View_Counter_Db::delete_view_count_row($post_id);

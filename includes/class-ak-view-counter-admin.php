@@ -2,7 +2,6 @@
 /**
  * Handling admin area
  */
-
 if ( ! defined( 'ABSPATH' ) ) exit;
 if ( ! class_exists('AK_View_Counter_Db')) return;
 
